@@ -48,4 +48,14 @@ async function getDocumentById(collection, docId) {
   }
 }
 
-module.exports = { getDocs, addDocument, setDocument, getDocumentById };
+async function setImage(collection, docId, image) {
+  try {
+    await db.collection(collection).doc(docId).set({ image });
+    return docId;
+  } catch (error) {
+    console.error('Error setting image:', error);
+    throw error;
+  }
+}
+
+module.exports = { getDocs, addDocument, setDocument, getDocumentById , setImage};

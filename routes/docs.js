@@ -46,5 +46,14 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'No se pudo obtener el documento' });
   }
 });
+router.post('/setImage/:id', async (req, res) => {
+  try {
+    const docId = req.params.id;
+    await setDocument(COLLECTION, docId, { image: req.body.image });
+    res.status(201).json({ id: docId });
+  } catch (error) {
+    res.status(500).json({ error: 'No se pudo guardar la imagen' });
+  }
+});
 
 module.exports = router;
