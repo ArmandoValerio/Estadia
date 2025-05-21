@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>....</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  </head
+<body>
+     <div class="btn">
+         <span class="fas fa-bars"></span>
+      </div>
+      <nav class="sidebar">
+         <div class="text">
+            Side Menu
+         </div>
+         <ul>
+            <li class="active"><a href="index.html">Ubicaciones</a></li>
+            <li>
+               <a href="reports.html" class="feat-btn">Reportes
+               <span class="fas fa-caret-down first"></span>
+               </a>
+            </li>
+            <li>
+               <a href="recnicals.html" class="serv-btn">Tecnicos
+               <span class="fas fa-caret-down second"></span>
+               </a>
+            </li>
+            <div class="lat">
+            <button class="butt">Logout</button>
+            </div>
+         </ul>
+      </nav>
+     
+      <script>
+         $('.btn').click(function(){
+           $(this).toggleClass("click");
+           $('.sidebar').toggleClass("show");
+         });
+           $('.feat-btn').click(function(){
+             $('nav ul .feat-show').toggleClass("show");
+             $('nav ul .first').toggleClass("rotate");
+           });
+           $('.serv-btn').click(function(){
+             $('nav ul .serv-show').toggleClass("show1");
+             $('nav ul .second').toggleClass("rotate");
+           });
+           $('nav ul li').click(function(){
+             $(this).addClass("active").siblings().removeClass("active");
+           });
+      </script>
+    <h2>Subir y Mostrar Imagen</h2>
+    <form id="uploadForm">
+        <input type="text" id="nombre" placeholder="Nombre del documento" required><br><br>
+        <input type="text" id="descripcion" placeholder="Descripción" required><br><br>
+        <input type="file" id="imageInput" placeholder="kkk" accept="image/*" required>
+        <button type="submit">Subir</button>
+    </form>
+    <div>
+        <img id="preview" src="" alt="Vista previa de la imagen" style="display:none;">
+    </div>
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        let imageBase64 = "";
+
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    imageBase64 = e.target.result; // Guardar la imagen en base64
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                imageBase64 = "";
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const descripcion = document.getElementById('descripcion').value;
+
+            fetch('http://localhost:3000/docs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombre,
+                    descripcion,
+                    image: imageBase64
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert('Documento subido con ID: ' + data.id);
+            })
+            .catch(err => {
+                alert('Error al subir el documento');
+            });
+        });
+    </script>
+</body>
+</html>
