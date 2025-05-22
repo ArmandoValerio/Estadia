@@ -258,3 +258,13 @@ nav ul li a span.rotate{
   width: calc(100vw - 250px);
 }
 
+/*Reportes*/
+.sidebar.show ~.a1{
+margin-left: 250px;
+  width: calc(100vw - 250px);
+}
+.field{
+  background-color: blanchedalmond;
+  width: 100%;
+  height: 140px;
+}

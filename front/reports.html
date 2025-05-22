@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>....</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+<body>
+    <div class="btn">
+  <i class="fa-regular fa-rectangle-list"></i>
+</div>
+      <nav class="sidebar">
+         <div class="text">
+            Apartados
+         </div>
+         <ul>
+            <li class="active"><a href="./index.html">Ubicaciones</a></li>
+            <li>
+               <a href="./reports.html" class="feat-btn">Reportes
+               <span class="fas fa-caret-down first"></span>
+               </a>
+            </li>
+            <li>
+               <a href="./tecnicals.html" class="serv-btn">Tecnicos
+               <span class="fas fa-caret-down second"></span>
+               </a>
+            </li>
+            
+         </ul>
+         <div class="lat">
+            <button class="butt">Logout</button>
+            </div>
+      </nav>
+      <script>
+         $('.btn').click(function(){
+  $(this).toggleClass("click");
+  $('.sidebar').toggleClass("show");
+  setTimeout(function() {
+    map.invalidateSize();
+  }, 410); // Espera a que termine la transición CSS
+});
+           $('.feat-btn').click(function(){
+             $('nav ul .feat-show').toggleClass("show");
+             $('nav ul .first').toggleClass("rotate");
+           });
+           $('.serv-btn').click(function(){
+             $('nav ul .serv-show').toggleClass("show1");
+             $('nav ul .second').toggleClass("rotate");
+           });
+           $('nav ul li').click(function(){
+             $(this).addClass("active").siblings().removeClass("active");
+           });
+      </script>
+    <div class="a1">
+    <div class="field" id="searchform">
+        <h1>Reportes</h1>
+  <input type="text" id="searchterm" placeholder="what are you searching for?" />
+  <button type="button" id="search">Find!</button>
+  <div>
+    <button onclick="agregarFila()">
+        Agregar
+    </button>
+</div>
+</div>
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+</div>
+       <table  class="a1">
+      <thead>
+        <tr>
+        <th>ID</th>
+        <th>Concepto</th>
+        <th>Ubicacion</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <script>
+    let contadorId = 1;
+const tabla = document.querySelector('table');
+const cuerpoTabla = tabla.querySelector('tbody');
+
+function agregarFila() {
+    const nuevaFila = cuerpoTabla.insertRow();
+
+    // ID automático
+    const celdaId = nuevaFila.insertCell();
+    celdaId.textContent = contadorId++;
+
+    // Concepto
+    const celdaConcepto = nuevaFila.insertCell();
+    celdaConcepto.textContent = 'Concepto';
+
+    // Ubicación
+    const celdaUbicacion = nuevaFila.insertCell();
+    celdaUbicacion.textContent = 'Ubicación';
+
+    // Estado
+    const celdaEstado = nuevaFila.insertCell();
+    celdaEstado.textContent = 'Pendiente';
+
+    // Fecha
+    const celdaFecha = nuevaFila.insertCell();
+    celdaFecha.textContent = new Date().toLocaleDateString();
+
+    // Botón Editar
+    const celdaEditar = nuevaFila.insertCell();
+    const btnEditar = document.createElement('button');
+    btnEditar.textContent = 'Editar';
+    btnEditar.onclick = function() {
+        alert('Editar fila ' + (nuevaFila.rowIndex));
+    };
+    celdaEditar.appendChild(btnEditar);
+
+    // Botón Eliminar
+    const celdaEliminar = nuevaFila.insertCell();
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar';
+    btnEliminar.onclick = function() {
+        tabla.deleteRow(nuevaFila.rowIndex);
+    };
+    celdaEliminar.appendChild(btnEliminar);
+}
+    </script>
+</body>
