@@ -11,20 +11,20 @@
 </head>
 <body>
     <div class="btn">
-  <i class="fa-regular fa-rectangle-list"></i>
+  <img src="./img/menu-hamburguesa.png" alt="" class="bat">
 </div>
       <nav class="sidebar">
          <div class="text">
             Apartados
          </div>
          <ul>
-            <li class="active"><a href="./index.html">Ubicaciones</a></li>
+            <li class=""><a href="./index.html">Ubicaciones</a></li>
             <li>
                <a href="./reports.html" class="feat-btn">Reportes
                <span class="fas fa-caret-down first"></span>
                </a>
             </li>
-            <li>
+            <li class="active">
                <a href="./tecnicals.html" class="serv-btn">Tecnicos
                <span class="fas fa-caret-down second"></span>
                </a>
@@ -56,20 +56,27 @@
       </script>
     <div class="a1"> 
             <div class="field" id="searchform">
-              <h1>Tecnicos</h1>
-  <input type="text" id="searchterm" placeholder="what are you searching for?" />
-  <button type="button" id="search">Find!</button>
+              <h1 class="text">Tecnicos</h1>
+              <div class="group">
+                <input type="text" id="searchterm" placeholder="Buscar" class="input" />
+                <button type="button" id="search" class="find">Find!</button>
+      </div>
   <div>
-    <button id="btnAgregar">
+    
+</div>
+</div>
+
+<div class="add1">
+    <button id="btnAgregar" class="add">
         Agregar
     </button>
-</div>
-</div>
+    </div>
 <script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 
 </div>
        <table class="a1">
-      <thead>
+        <section class="table">
+      <thead >
         <tr>
           <th>ID</th>
           <th>Nombre</th>
@@ -81,7 +88,9 @@
       </thead>
       <tbody>
       </tbody>
+      </section>
     </table>
+    
     <script>
   // Configuración de tu proyecto Firebase
  const firebaseConfig = {
@@ -144,7 +153,7 @@ function agregarFila() {
 
   function mostrarTecnicos() {
     cuerpoTabla.innerHTML = ""; // Limpia la tabla
-    db.collection("Tecnicos").get().then((querySnapshot) => {
+    db.collection("Tecnicos").orderBy("ID").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         const nuevaFila = cuerpoTabla.insertRow();
@@ -167,21 +176,27 @@ function agregarFila() {
 
         // Botón Editar
         const celdaEditar = nuevaFila.insertCell();
-        const btnEditar = document.createElement('button');
-        btnEditar.textContent = 'Editar';
-        btnEditar.onclick = function() {
+        const imgEditar = document.createElement('img');
+        imgEditar.src = './img/lapiz.png'; // Ruta a tu icono de editar
+        imgEditar.alt = 'Editar';
+        imgEditar.style.cursor = 'pointer';
+        imgEditar.style.width = '24px';
+        imgEditar.onclick = function() {
           alert('Editar técnico: ' + data.Nombre);
         };
-        celdaEditar.appendChild(btnEditar);
+        celdaEditar.appendChild(imgEditar);
 
         // Botón Eliminar
         const celdaEliminar = nuevaFila.insertCell();
-        const btnEliminar = document.createElement('button');
-        btnEliminar.textContent = 'Eliminar';
-        btnEliminar.onclick = function() {
+        const imgEliminar = document.createElement('img');
+        imgEliminar.src = './img/basura.png'; // Ruta a tu icono de eliminar
+        imgEliminar.alt = 'Eliminar';
+        imgEliminar.style.cursor = 'pointer';
+        imgEliminar.style.width = '24px';
+        imgEliminar.onclick = function() {
           db.collection("Tecnicos").doc(doc.id).delete().then(mostrarTecnicos);
         };
-        celdaEliminar.appendChild(btnEliminar);
+        celdaEliminar.appendChild(imgEliminar);
       });
     });
   }

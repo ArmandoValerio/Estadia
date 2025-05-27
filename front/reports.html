@@ -6,18 +6,23 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <div class="btn">
   <i class="fa-regular fa-rectangle-list"></i>
+</div>
+<div class="btn">
+  <img src="./img/menu-hamburguesa.png" alt="" class="bat">
 </div>
       <nav class="sidebar">
          <div class="text">
             Apartados
          </div>
          <ul>
-            <li class="active"><a href="./index.html">Ubicaciones</a></li>
-            <li>
+            <li><a href="./index.html">Ubicaciones</a></li>
+            <li class="active">
                <a href="./reports.html" class="feat-btn">Reportes
                <span class="fas fa-caret-down first"></span>
                </a>
@@ -27,11 +32,11 @@
                <span class="fas fa-caret-down second"></span>
                </a>
             </li>
-            
-         </ul>
-         <div class="lat">
+            <li class="lat">
             <button class="butt">Logout</button>
-            </div>
+            </li>
+         </ul>
+            
       </nav>
       <script>
          $('.btn').click(function(){
@@ -53,79 +58,125 @@
              $(this).addClass("active").siblings().removeClass("active");
            });
       </script>
-    <div class="a1">
-    <div class="field" id="searchform">
-        <h1>Reportes</h1>
-  <input type="text" id="searchterm" placeholder="what are you searching for?" />
-  <button type="button" id="search">Find!</button>
-  <div>
-    <button onclick="agregarFila()">
-        Agregar
-    </button>
+    <div class="a1"> 
+            <div class="field" id="searchform">
+              <h1 class="text">Reportes</h1>
+              <div class="group">
+                <input type="text" id="searchterm" placeholder="Buscar" class="input" />
+                <button type="button" id="search" class="find">Find!</button>
+      </div>
 </div>
 </div>
-<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<button id="btnAgregarReporte" class="add">Agregar Reporte</button>
+<table class="a1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Concepto</th>
+      <th>Ubicacion</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<script>
+  // Configuración de tu proyecto Firebase
+ const firebaseConfig = {
+  apiKey: "AIzaSyA_cHe-2we5iphebELRkAQMvrsUmk6JmMA",
+  authDomain: "estadia-1ae6b.firebaseapp.com",
+  projectId: "estadia-1ae6b",
+  storageBucket: "estadia-1ae6b.firebasestorage.app",
+  messagingSenderId: "546513941878",
+  appId: "1:546513941878:web:fcd0efa875b08331713657",
+  measurementId: "G-ML4E1VGMMK"
+};
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-</div>
-       <table  class="a1">
-      <thead>
-        <tr>
-        <th>ID</th>
-        <th>Concepto</th>
-        <th>Ubicacion</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-        <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <script>
-    let contadorId = 1;
-const tabla = document.querySelector('table');
-const cuerpoTabla = tabla.querySelector('tbody');
+  const tabla = document.querySelector('table');
+  const cuerpoTabla = tabla.querySelector('tbody');
 
-function agregarFila() {
-    const nuevaFila = cuerpoTabla.insertRow();
+  function mostrarReportes() {
+    cuerpoTabla.innerHTML = "";
+    db.collection("Reportes").orderBy("ID").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const nuevaFila = cuerpoTabla.insertRow();
 
-    // ID automático
-    const celdaId = nuevaFila.insertCell();
-    celdaId.textContent = contadorId++;
+        // ID
+        const celdaId = nuevaFila.insertCell();
+        celdaId.textContent = data.ID || "";
 
-    // Concepto
-    const celdaConcepto = nuevaFila.insertCell();
-    celdaConcepto.textContent = 'Concepto';
+        // Concepto
+        const celdaConcepto = nuevaFila.insertCell();
+        celdaConcepto.textContent = data.Concepto || "";
 
-    // Ubicación
-    const celdaUbicacion = nuevaFila.insertCell();
-    celdaUbicacion.textContent = 'Ubicación';
+        // Ubicación
+        const celdaUbicacion = nuevaFila.insertCell();
+        celdaUbicacion.textContent = data.Ubicacion || "";
 
-    // Estado
-    const celdaEstado = nuevaFila.insertCell();
-    celdaEstado.textContent = 'Pendiente';
+        // Estado
+        const celdaEstado = nuevaFila.insertCell();
+        celdaEstado.textContent = data.Estado || "";
 
-    // Fecha
-    const celdaFecha = nuevaFila.insertCell();
-    celdaFecha.textContent = new Date().toLocaleDateString();
+        // Fecha
+        const celdaFecha = nuevaFila.insertCell();
+        celdaFecha.textContent = data.Fecha || "";
 
-    // Botón Editar
-    const celdaEditar = nuevaFila.insertCell();
-    const btnEditar = document.createElement('button');
-    btnEditar.textContent = 'Editar';
-    btnEditar.onclick = function() {
-        alert('Editar fila ' + (nuevaFila.rowIndex));
-    };
-    celdaEditar.appendChild(btnEditar);
+        // Botón Editar (con imagen)
+        const celdaEditar = nuevaFila.insertCell();
+        const imgEditar = document.createElement('img');
+        imgEditar.src = './img/lapiz.png';
+        imgEditar.alt = 'Editar';
+        imgEditar.style.cursor = 'pointer';
+        imgEditar.style.width = '24px';
+        imgEditar.onclick = function() {
+          alert('Editar reporte: ' + data.ID);
+        };
+        celdaEditar.appendChild(imgEditar);
 
-    // Botón Eliminar
-    const celdaEliminar = nuevaFila.insertCell();
-    const btnEliminar = document.createElement('button');
-    btnEliminar.textContent = 'Eliminar';
-    btnEliminar.onclick = function() {
-        tabla.deleteRow(nuevaFila.rowIndex);
-    };
-    celdaEliminar.appendChild(btnEliminar);
-}
-    </script>
+        // Botón Eliminar (con imagen)
+        const celdaEliminar = nuevaFila.insertCell();
+        const imgEliminar = document.createElement('img');
+        imgEliminar.src = './img/basura.png';
+        imgEliminar.alt = 'Eliminar';
+        imgEliminar.style.cursor = 'pointer';
+        imgEliminar.style.width = '24px';
+        imgEliminar.onclick = function() {
+          db.collection("Reportes").doc(doc.id).delete().then(mostrarReportes);
+        };
+        celdaEliminar.appendChild(imgEliminar);
+      });
+    });
+  }
+
+  mostrarReportes();
+
+  document.getElementById('btnAgregarReporte').onclick = function() {
+  const concepto = prompt("Concepto:");
+  const ubicacion = prompt("Ubicación:");
+  const estado = prompt("Estado:");
+  const fecha = prompt("Fecha (ejemplo: 2024-06-01):");
+
+  // Obtener el ID más alto actual para incrementar
+  db.collection("Reportes").orderBy("ID", "desc").limit(1).get().then(snapshot => {
+    let nuevoId = 1;
+    if (!snapshot.empty) {
+      nuevoId = (snapshot.docs[0].data().ID || 0) + 1;
+    }
+    db.collection("Reportes").add({
+      ID: nuevoId,
+      Concepto: concepto,
+      Ubicacion: ubicacion,
+      Estado: estado,
+      Fecha: fecha
+    }).then(mostrarReportes);
+  });
+};
+</script>
 </body>
+</html>

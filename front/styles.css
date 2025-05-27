@@ -102,7 +102,7 @@ body {
   height: 45px;
   width: 45px;
   text-align: center;
-  background: #1b1b1b;
+  background: transparent;
   border-radius: 3px;
   cursor: pointer;
   transition: left 0.4s ease;
@@ -127,7 +127,7 @@ body {
   width: 250px;
   height: 100%;
   left: -250px;
-  background: #1b1b1b;
+  background: #862319;
   transition: left 0.4s ease;
 }
 .sidebar.show{
@@ -139,11 +139,11 @@ body {
   font-weight: 600;
   line-height: 65px;
   text-align: center;
-  background: #1e1e1e;
+  background: #862319;
   letter-spacing: 1px;
 }
 nav ul{
-  background: #1b1b1b;
+  background: #5c1404;
   height: 100%;
   width: 100%;
   list-style: none;
@@ -167,12 +167,12 @@ nav ul li a{
   border-left: 3px solid transparent;
 }
 nav ul li.active a{
-  color: cyan;
-  background: #1e1e1e;
-  border-left-color: cyan;
+  color: #dc9b42;
+  background: #862319;
+  border-left-color: #dc9b42;
 }
 nav ul li a:hover{
-  background: #1e1e1e;
+  background: #dc9b42;
 }
 nav ul ul{
   position: static;
@@ -199,7 +199,7 @@ nav ul li.active ul li a{
   border-left-color: transparent;
 }
 nav ul ul li a:hover{
-  color: cyan!important;
+  color: #dc9b42!important;
   background: #1e1e1e!important;
 }
 nav ul li a span{
@@ -218,7 +218,7 @@ nav ul li a span.rotate{
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  color: #202020;
+  color: #862319;
   z-index: -1;
   text-align: center;
 }
@@ -234,13 +234,17 @@ nav ul li a span.rotate{
     width: 50%;
     height: 40px;
     color: white;
-    background-color: #17c;
+    background-color: #dc9b42;
     font-size: 20px;
     border-radius: 20px;
 }
 .lat{
     display: flex;
     justify-content: center;
+}
+.bat{
+  width: 45px;
+  height: 45px;
 }
 
 /*Mapa*/
@@ -264,7 +268,93 @@ margin-left: 250px;
   width: calc(100vw - 250px);
 }
 .field{
-  background-color: blanchedalmond;
+  background-color: #862319;
   width: 100%;
   height: 140px;
+}
+.text{
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+.input{
+  width: 70%;
+  height: 40px;
+  border-radius: 20px;
+  margin: 5px;
+  padding-left: 10px;
+  margin-right: 20px;
+}
+.group{
+  display: flex;
+  justify-content: center;
+}
+.find{
+  width: 150px;
+  height: 40px;
+  color: white;
+  background-color: #dc9b42;
+  font-size: 20px;
+  border-radius: 20px;
+  margin: 5px;
+}
+.add{
+  width: 150px;
+  height: 40px;
+  color: white;
+  background-color: #dc9b42;
+  font-size: 20px;
+  border-radius: 20px;
+  margin: 10px;
+}
+.add1{
+  display: flex;
+  justify-content: end;
+}
+
+/* Estilo general para la tabla */
+table.a1 {
+  width: 90%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  background: black;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Encabezado */
+table.a1 thead th {
+  background: #dc9b42;
+  color: #fff;
+  padding: 12px 8px;
+  font-size: 18px;
+  border-bottom: 2px solid #fff;
+}
+
+/* Filas */
+table.a1 tbody td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #444;
+  text-align: center;
+}
+
+/* Alternar color de filas */
+table.a1 tbody tr:nth-child(even) {
+  background: #292929;
+}
+
+/* Hover en filas */
+table.a1 tbody tr:hover {
+  background: #333;
+}
+
+/* Botones de imagen */
+table.a1 img {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+table.a1 img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
 }
