@@ -5,6 +5,9 @@
     <title>Subir y Mostrar Imagen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <div class="login">
@@ -12,10 +15,12 @@
   
   <h2 class="login-header">Log in</h2>
 
-  <form class="login-container">
-    <p><input type="email" placeholder="Email"></p>
-    <p><input type="password" placeholder="Password"></p>
-    <p><input type="submit" value="Log in"></p>
-  </form>
+  <<form id="loginForm">
+  <input type="text" id="user" placeholder="Usuario" required>
+  <input type="password" id="password" placeholder="Contraseña" required>
+  <button type="submit">Iniciar sesión</button>
+  <div id="loginError" style="color:red;"></div>
+</form>
+<script src="login.js"></script>
 </div>
 </body>

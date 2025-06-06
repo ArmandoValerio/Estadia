@@ -1,229 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="utf-8">
-    <title>....</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <meta charset="utf-8">
+  <title>....</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
-    <div class="btn">
-  <img src="./img/menu-hamburguesa.png" alt="" class="bat">
-</div>
-      <nav class="sidebar">
-         <div class="text">
-            Apartados
-         </div>
-         <ul>
-            <li class=""><a href="./index.html">Ubicaciones</a></li>
-            <li>
-               <a href="./reports.html" class="feat-btn">Reportes
-               <span class="fas fa-caret-down first"></span>
-               </a>
-            </li>
-            <li class="active">
-               <a href="./tecnicals.html" class="serv-btn">Tecnicos
-               <span class="fas fa-caret-down second"></span>
-               </a>
-            </li>
-            <li class="lat">
-            <button class="butt">Logout</button>
-            </li>
-         </ul>
-      </nav>
-      <script>
-         $('.btn').click(function(){
-  $(this).toggleClass("click");
-  $('.sidebar').toggleClass("show");
-  setTimeout(function() {
-    map.invalidateSize();
-  }, 410); // Espera a que termine la transición CSS
-});
-           $('.feat-btn').click(function(){
-             $('nav ul .feat-show').toggleClass("show");
-             $('nav ul .first').toggleClass("rotate");
-           });
-           $('.serv-btn').click(function(){
-             $('nav ul .serv-show').toggleClass("show1");
-             $('nav ul .second').toggleClass("rotate");
-           });
-           $('nav ul li').click(function(){
-             $(this).addClass("active").siblings().removeClass("active");
-           });
-      </script>
-    <div class="a1"> 
-            <div class="field" id="searchform">
-              <h1 class="text">Tecnicos</h1>
-              <div class="group">
-                <input type="text" id="searchterm" placeholder="Buscar" class="input" />
-                <button type="button" id="search" class="find">Find!</button>
-      </div>
-  <div>
-    
-</div>
-</div>
-
-<div class="add1">
-    <button id="btnAgregar" class="add">
-        Agregar
-    </button>
+  <div class="btn">
+    <img src="./img/menu-hamburguesa.png" alt="" class="bat">
+  </div>
+  <nav class="sidebar">
+    <div class="text">
+      Apartados
     </div>
-<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <ul>
+      <li class=""><a href="./index.html">Ubicaciones</a></li>
+      <li>
+        <a href="./reports.html" class="feat-btn">Reportes
+          <span class="fas fa-caret-down first"></span>
+        </a>
+      </li>
+      <li class="active">
+        <a href="./tecnicals.html" class="serv-btn">Tecnicos
+          <span class="fas fa-caret-down second"></span>
+        </a>
+      </li>
+      <li>
+        <a href="./records.html" class="serv-btn">Registros
+          <span class="fas fa-caret-down second"></span>
+        </a>
+      </li>
+      <li class="lat">
+        <button class="butt">Logout</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="a1">
+    <div class="field" id="searchform">
+      <h1 class="text">Tecnicos</h1>
+      <div class="group">
+        <input type="text" id="searchterm" placeholder="Buscar" class="input" />
+        <button type="button" id="search" class="find">Find!</button>
+      </div>
+    </div>
 
-</div>
-       <table class="a1">
-        <section class="table">
-      <thead >
+    <div class="add1">
+      <button id="btnAgregar" class="add">
+        Agregar
+      </button>
+    </div>
+
+  </div>
+  <table class="a1">
+    <section class="table">
+      <thead>
         <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Contacto</th>
-          <th>Estado</th>
+          <th class="c1">ID
+            <button class="list" aria-label="Desplegar ID" id="btnDesplegarId"><img src="./img/desplegar.png" alt=""
+                class="butt1"></button>
+            <div id="menuId" class="menu-desplegable"></div>
+          </th>
+          <th class="c1">Nombre
+            <button class="list" aria-label="Desplegar Nombres" id="btnDesplegarNombre"><img src="./img/desplegar.png"
+                alt="" class="butt1"></button>
+            <div id="menuNombre" class="menu-desplegable"></div>
+          </th>
+          <th class="c1">Apellidos
+            <button class="list" aria-label="Desplegar Contactos" id="btnDesplegarApellidos">
+              <img src="./img/desplegar.png" alt="" class="butt1"></button>
+            <div id="menuApellidos" class="menu-desplegable"></div>
+          </th>
+          <th class="c1">
+            Contacto
+            <button class="list" aria-label="Desplegar contacto" id="btnDesplegarContacto">
+              <img src="./img/desplegar.png" alt="" class="butt1">
+              <div id="menuContacto" class="menu-desplegable"></div>
+            </button>
+          </th>
+          <th class="c1">
+            Estado
+            <button class="list" aria-label="Desplegar estado" id="btnDesplegarEstado">
+              <img src="./img/desplegar.png" alt="" class="butt1">
+            </button>
+            <div id="menuEstado" class="menu-desplegable"></div>
+          </th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
       </tbody>
-      </section>
-    </table>
-    
-    <script>
-  // Configuración de tu proyecto Firebase
- const firebaseConfig = {
-  apiKey: "AIzaSyA_cHe-2we5iphebELRkAQMvrsUmk6JmMA",
-  authDomain: "estadia-1ae6b.firebaseapp.com",
-  projectId: "estadia-1ae6b",
-  storageBucket: "estadia-1ae6b.firebasestorage.app",
-  messagingSenderId: "546513941878",
-  appId: "1:546513941878:web:fcd0efa875b08331713657",
-  measurementId: "G-ML4E1VGMMK"
-};
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
-    <script>
-        let contadorId = 1;
-// const tabla = document.querySelector('table');
-// const cuerpoTabla = tabla.querySelector('tbody');
-
-function agregarFila() {
-    const nuevaFila = cuerpoTabla.insertRow();
-
-    // ID automático
-    const celdaId = nuevaFila.insertCell();
-    celdaId.textContent = contadorId++;
-
-    // Concepto
-    const celdaConcepto = nuevaFila.insertCell();
-    celdaConcepto.textContent = 'Nombre';
-
-    // Ubicación
-    const celdaUbicacion = nuevaFila.insertCell();
-    celdaUbicacion.textContent = 'Contacto';
-
-    // Estado
-    const celdaEstado = nuevaFila.insertCell();
-    celdaEstado.textContent = 'Estado';
-
-    // Botón Editar
-    const celdaEditar = nuevaFila.insertCell();
-    const btnEditar = document.createElement('button');
-    btnEditar.textContent = 'Editar';
-    btnEditar.onclick = function() {
-        alert('Editar fila ' + (nuevaFila.rowIndex));
-    };
-    celdaEditar.appendChild(btnEditar);
-
-    // Botón Eliminar
-    const celdaEliminar = nuevaFila.insertCell();
-    const btnEliminar = document.createElement('button');
-    btnEliminar.textContent = 'Eliminar';
-    btnEliminar.onclick = function() {
-        tabla.deleteRow(nuevaFila.rowIndex);
-    };
-    celdaEliminar.appendChild(btnEliminar);
-}
-
-  const tabla = document.querySelector('table');
-  const cuerpoTabla = tabla.querySelector('tbody');
-
-  function mostrarTecnicos() {
-    cuerpoTabla.innerHTML = ""; // Limpia la tabla
-    db.collection("Tecnicos").orderBy("ID").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const nuevaFila = cuerpoTabla.insertRow();
-
-        // ID
-        const celdaId = nuevaFila.insertCell();
-        celdaId.textContent = data.ID || "";
-
-        // Nombre
-        const celdaNombre = nuevaFila.insertCell();
-        celdaNombre.textContent = data.Nombre || "";
-
-        // Contacto
-        const celdaContacto = nuevaFila.insertCell();
-        celdaContacto.textContent = data.Contacto || "";
-
-        // Estado
-        const celdaEstado = nuevaFila.insertCell();
-        celdaEstado.textContent = data.Estado || "";
-
-        // Botón Editar
-        const celdaEditar = nuevaFila.insertCell();
-        const imgEditar = document.createElement('img');
-        imgEditar.src = './img/lapiz.png'; // Ruta a tu icono de editar
-        imgEditar.alt = 'Editar';
-        imgEditar.style.cursor = 'pointer';
-        imgEditar.style.width = '24px';
-        imgEditar.onclick = function() {
-          alert('Editar técnico: ' + data.Nombre);
-        };
-        celdaEditar.appendChild(imgEditar);
-
-        // Botón Eliminar
-        const celdaEliminar = nuevaFila.insertCell();
-        const imgEliminar = document.createElement('img');
-        imgEliminar.src = './img/basura.png'; // Ruta a tu icono de eliminar
-        imgEliminar.alt = 'Eliminar';
-        imgEliminar.style.cursor = 'pointer';
-        imgEliminar.style.width = '24px';
-        imgEliminar.onclick = function() {
-          db.collection("Tecnicos").doc(doc.id).delete().then(mostrarTecnicos);
-        };
-        celdaEliminar.appendChild(imgEliminar);
-      });
-    });
-  }
-
-  // Llama a la función al cargar la página
-  mostrarTecnicos();
-
-  document.getElementById('btnAgregar').onclick = function() {
-    // Puedes pedir los datos con prompt o usar inputs en el formulario
-    const nombre = prompt("Nombre del técnico:");
-    const contacto = prompt("Contacto:");
-    const estado = prompt("Estado:");
-
-    // Busca el ID más alto actual para incrementar (opcional, puedes usar auto-ID de Firestore)
-    db.collection("Tecnicos").orderBy("ID", "desc").limit(1).get().then(snapshot => {
-        let nuevoId = 1;
-        if (!snapshot.empty) {
-            nuevoId = (snapshot.docs[0].data().ID || 0) + 1;
-        }
-        db.collection("Tecnicos").add({
-            ID: nuevoId,
-            Nombre: nombre,
-            Contacto: contacto,
-            Estado: estado
-        }).then(mostrarTecnicos);
-    });
-};
-    </script>
+    </section>
+  </table>
+  <!-- Modal para editar técnico -->
+  <div id="modalEditar" class="modal">
+    <div class="modal-content">
+      <h2>Editar Técnico</h2>
+      <form id="formEditar">
+        <input type="hidden" id="editId">
+        <div>
+          <label>Nombre:</label>
+          <input type="text" id="editNombre" required placeholder="Ingrese el nombre" title="Nombre del técnico">
+        </div>
+        <div>
+          <label>Apellidos:</label>
+          <input type="text" id="editApellidos" required placeholder="Ingrese los apellidos"
+            title="Apellidos del técnico">
+        </div>
+        <div>
+          <label>Contacto:</label>
+          <input type="text" id="editContacto" required placeholder="Ingrese el contacto" title="Contacto del técnico">
+        </div>
+        <div>
+          <label>Estado:</label>
+          <select id="editEstado" required title="Estado del técnico">
+            <option value="Activo">Activo</option>
+            <option value="Inhabilitado">Inhabilitado</option>
+          </select>
+        </div>
+        <div class="b1">
+          <button type="submit" class="butt">Guardar</button>
+          <button type="button" onclick="cerrarModal()" class="butt2">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Modal para agregar técnico -->
+  <div id="modalAgregar" class="modal">
+    <div class="modal-content">
+      <h2>Agregar Técnico</h2>
+      <form id="formAgregar">
+        <div>
+          <label>Nombre:</label>
+          <input type="text" id="addId" required placeholder="Ingrese el identificador" title="ID">
+        </div>
+        <div>
+          <label>Nombre:</label>
+          <input type="text" id="addNombre" required placeholder="Ingrese el nombre" title="Nombre del técnico">
+        </div>
+        <div>
+          <label>Apellidos:</label>
+          <input type="text" id="addApellidos" required placeholder="Ingrese los apellidos"
+            title="Apellidos del técnico">
+        </div>
+        <div>
+          <label>Contacto:</label>
+          <input type="text" id="addContacto" required placeholder="Ingrese el contacto" title="Contacto del técnico">
+        </div>
+        <div>
+          <label for="addEstado">Estado:</label>
+          <select id="addEstado" required title="Estado del técnico">
+            <option value="Activo">Activo</option>
+            <option value="Inhabilitado">Inhabilitado</option>
+          </select>
+        </div>
+        <div class="b1">
+          <button type="submit" class="butt">Agregar</button>
+          <button type="button" onclick="cerrarModalAgregar()" class="butt2">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="tecnicals.js"></script>
 </body>
+
 </html>

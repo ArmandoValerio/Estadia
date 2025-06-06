@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>....</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+  <div class="btn">
+    <i class="fa-regular fa-rectangle-list"></i>
+  </div>
+  <div class="btn">
+    <img src="./img/menu-hamburguesa.png" alt="" class="bat">
+  </div>
+  <nav class="sidebar">
+    <div class="text">
+      Apartados
+    </div>
+    <ul>
+      <li><a href="./index.html">Ubicaciones</a></li>
+      <li class="active">
+        <a href="./reports.html" class="feat-btn">Reportes
+          <span class="fas fa-caret-down first"></span>
+        </a>
+      </li>
+      <li>
+        <a href="./tecnicals.html" class="serv-btn">Tecnicos
+          <span class="fas fa-caret-down second"></span>
+        </a>
+      </li>
+      <li>
+        <a href="./records.html" class="serv-btn">Registros
+          <span class="fas fa-caret-down second"></span>
+        </a>
+      </li>
+      <li class="lat">
+        <button class="butt">Logout</button>
+      </li>
+    </ul>
+
+  </nav>
+  <div class="a1">
+    <div class="field" id="searchform">
+      <h1 class="text">Registros</h1>
+      <div class="group">
+        <input type="text" id="searchterm" placeholder="Buscar" class="input" />
+        <button type="button" id="search" class="find">Find!</button>
+      </div>
+    </div>
+  </div>
+
+    <table class="a1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>
+            Concepto
+            <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
+                class="butt1"></button>
+          </th>
+          <th>Ubicacion</th>
+          <th>
+            Asignacion <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
+                class="butt1"></button>
+          </th>
+          <th>
+            Estado <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
+                class="butt1"></button>
+          </th>
+          <th>
+            Fecha <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
+                class="butt1"></button
+              </th>
+          <th></th>
+          </tr>
+          <tbody>
+
+          </tbody>
+    </table>
+    <script src="records.js"></script>
+</body>
+
+</html>
