@@ -51,7 +51,7 @@
       <h1 class="text">Reportes</h1>
       <div class="group">
         <input type="text" id="searchterm" placeholder="Buscar" class="input" />
-        <button type="button" id="search" class="find">Find!</button>
+        <button type="button" id="search" class="find">Buscar</button>
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
           <button class="list" aria-label="Desplegar Concepto" id="btnDesplegarConcepto">
             <img src="./img/desplegar.png" alt="" class="butt1">
           </button>
-          <div id="menuIConcepto" class="menu-desplegable"></div>
+          <div id="menuConcepto" class="menu-desplegable"></div>
         </th>
         <th>Ubicacion</th>
         <th>
@@ -102,38 +102,41 @@
 
   <!-- Modal para editar reporte -->
   <div id="modalEditar" class="modal">
-    <div class="modal-content">
-      <h2>Editar Reporte</h2>
-      <form id="formEditar">
-        <input type="hidden" id="editId">
-        <div>
-          <label for="editConcepto">Concepto:</label>
-          <select id="editConcepto" required>
-            <option value="Luminaria">Luminaria</option>
-            <option value="Bache">Bache</option>
+  <div class="modal-content">
+    <h2>Editar Reporte</h2>
+    <form id="formEditar">
+      <input type="hidden" id="editId">
+      
+      <div>
+        <label for="editConcepto">Concepto:</label>
+        <select id="editConcepto" required>
+          <option value="Luminaria">Luminaria</option>
+          <option value="Bache">Bache</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="editAsignacion">Asignacion:</label>
+        <select id="editAsignacion" required>
+          <option value="">Selecciona un técnico</option>
           </select>
-        </div>
-        <div>
-          <label for="editAsignacion">Asignacion:</label>
-          <select id="editAsignacion" required>
-            <option value="Pendiente">Pendiente</option>
-          </select>
-        </div>
-        <div>
-          <label for="editEstado">Estado:</label>
-          <select id="editEstado" required>
-            <option value="Pendiente">Pendiente</option>
-            <option value="En proceso">En proceso</option>
-            <option value="Completado">Completado</option>
-          </select>
-        </div>
-        <div class="b1">
-          <button type="submit" class="butt">Guardar</button>
-          <button type="button" onclick="cerrarModalEditar()" class="butt2">Cancelar</button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div>
+        <label for="editEstado">Estado:</label>
+        <select id="editEstado" required>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En proceso">En proceso</option>
+          <option value="Completado">Completado</option>
+        </select>
+      </div>
+      
+      <div class="b1">
+        <button type="submit" class="butt">Guardar</button>
+        <button type="button" onclick="cerrarModalEditar()" class="butt2">Cancelar</button>
+      </div>
+    </form>
   </div>
+</div>
 
   <!-- Al final del body -->
   <script src="reports.js"></script>

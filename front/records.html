@@ -50,7 +50,7 @@
       <h1 class="text">Registros</h1>
       <div class="group">
         <input type="text" id="searchterm" placeholder="Buscar" class="input" />
-        <button type="button" id="search" class="find">Find!</button>
+        <button type="button" id="search" class="find">Buscar</button>
       </div>
     </div>
   </div>
@@ -61,22 +61,33 @@
           <th>ID</th>
           <th>
             Concepto
-            <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
-                class="butt1"></button>
-          </th>
-          <th>Ubicacion</th>
-          <th>
-            Asignacion <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
-                class="butt1"></button>
-          </th>
-          <th>
-            Estado <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
-                class="butt1"></button>
-          </th>
-          <th>
-            Fecha <button class="list" aria-label="Desplegar estado"><img src="./img/desplegar.png" alt=""
-                class="butt1"></button
-              </th>
+          <button class="list" aria-label="Desplegar Concepto" id="btnDesplegarConcepto">
+            <img src="./img/desplegar.png" alt="" class="butt1">
+          </button>
+          <div id="menuConcepto" class="menu-desplegable"></div>
+        </th>
+        <th>Ubicacion</th>
+        <th>
+          Asignacion
+          <button class="list" aria-label="Desplegar Asignacion" id="btnDesplegarAsignacion">
+            <img src="./img/desplegar.png" alt="" class="butt1">
+          </button>
+          <div id="menuAsignacion" class="menu-desplegable"></div>
+        </th>
+        <th>
+          Estado
+          <button class="list" aria-label="Desplegar estado" id="btnDesplegarEstado">
+            <img src="./img/desplegar.png" alt="" class="butt1">
+          </button>
+          <div id="menuEstado" class="menu-desplegable"></div>
+        </th>
+        <th>
+          Fecha
+          <button class="list" aria-label="Desplegar Fecha" id="btnDesplegarFecha">
+            <img src="./img/desplegar.png" alt="" class="butt1">
+          </button>
+          <div id="menuFecha" class="menu-desplegable"></div>
+        </th>
           <th></th>
           </tr>
           <tbody>

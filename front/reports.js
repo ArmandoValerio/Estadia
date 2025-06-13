@@ -42,6 +42,7 @@ const cuerpoTabla = tabla.querySelector('tbody');
  * Muestra todos los reportes de la colección "Reportes" en la tabla HTML.
  * Ordena los reportes por el campo "ID".
  */
+/**
 function mostrarReportes() {
         cuerpoTabla.innerHTML = "";
         db.collection("Reportes").orderBy("ID").get().then((querySnapshot) => {
@@ -82,7 +83,20 @@ function mostrarReportes() {
                 celdaEliminar.appendChild(imgEliminar);
             });
         });
-    }
+    }*/
+
+  function mostrarReportes() {
+  cuerpoTabla.innerHTML = "";
+  todosLosReportes = []; // Limpia el array aquí
+  db.collection("Reportes").orderBy("ID").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      data._docId = doc.id; // Guarda el id para editar/eliminar
+      todosLosReportes.push(data);
+    });
+    renderTablaFiltrada();
+  });
+}      
 // Llama a la función para mostrar los reportes al cargar la página
 mostrarReportes();
 
@@ -131,6 +145,7 @@ function abrirModalEditar(docId, data) {
   document.getElementById('modalEditar').style.display = 'flex';
   document.getElementById('editId').value = docId; // Almacena el ID del documento
   document.getElementById('editConcepto').value = data.Concepto || '';
+  llenarSelectTecnicosActivos(data.Asignacion || "")
   document.getElementById('editEstado').value = data.Estado || '';
 }
 
@@ -195,4 +210,168 @@ document.getElementById('formEditar').onsubmit = function(event) {
  */
 function cerrarModalEditar() {
   document.getElementById('modalEditar').style.display = 'none';
+}
+
+let filtroConceptoSeleccionado = "";
+let filtroAsignacionSeleccionado = "";
+let filtroEstadoSeleccionado = "";
+let filtroFechaSeleccionado = "";
+
+document.getElementById('btnDesplegarConcepto').onclick = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('menuConcepto');
+  const valores = [...new Set(todosLosReportes.map(t => t.Concepto))].sort();
+  menu.innerHTML = '<div data-value="">Todos</div>' +
+    valores.map(v => `<div data-value="${v}">${v}</div>`).join('');
+  menu.style.display = 'block';
+  const rect = this.getBoundingClientRect();
+  menu.style.left = rect.left + 'px';
+  menu.style.top = (rect.bottom + 4) + 'px';
+};
+document.getElementById('menuConcepto').onclick = function (e) {
+  if (e.target.dataset.value !== undefined) {
+    filtroConceptoSeleccionado = e.target.dataset.value;
+    this.style.display = 'none';
+    renderTablaFiltrada();
+  }
+};
+document.getElementById('btnDesplegarAsignacion').onclick = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('menuAsignacion');
+  const valores = [...new Set(todosLosReportes.map(t => t.Asignacion))].sort();
+  menu.innerHTML = '<div data-value="">Todos</div>' +
+    valores.map(v => `<div data-value="${v}">${v}</div>`).join('');
+  menu.style.display = 'block';
+  const rect = this.getBoundingClientRect();
+  menu.style.left = rect.left + 'px';
+  menu.style.top = (rect.bottom + 4) + 'px';
+};
+document.getElementById('menuAsignacion').onclick = function (e) {
+  if (e.target.dataset.value !== undefined) {
+    filtroAsignacionSeleccionado = e.target.dataset.value;
+    this.style.display = 'none';
+    renderTablaFiltrada();
+  }
+};
+
+document.getElementById('btnDesplegarEstado').onclick = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('menuEstado');
+  const valores = [...new Set(todosLosReportes.map(t => t.Estado))].sort();
+  menu.innerHTML = '<div data-value="">Todos</div>' +
+    valores.map(v => `<div data-value="${v}">${v}</div>`).join('');
+  menu.style.display = 'block';
+  const rect = this.getBoundingClientRect();
+  menu.style.left = rect.left + 'px';
+  menu.style.top = (rect.bottom + 4) + 'px';
+};
+document.getElementById('menuEstado').onclick = function (e) {
+  if (e.target.dataset.value !== undefined) {
+    filtroEstadoSeleccionado = e.target.dataset.value;
+    this.style.display = 'none';
+    renderTablaFiltrada();
+  }
+};
+
+document.getElementById('btnDesplegarFecha').onclick = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('menuFecha');
+  const valores = [...new Set(todosLosReportes.map(t => t.Fecha))].sort();
+  menu.innerHTML = '<div data-value="">Todos</div>' +
+    valores.map(v => `<div data-value="${v}">${v}</div>`).join('');
+  menu.style.display = 'block';
+  const rect = this.getBoundingClientRect();
+  menu.style.left = rect.left + 'px';
+  menu.style.top = (rect.bottom + 4) + 'px';
+};
+document.getElementById('menuFecha').onclick = function (e) {
+  if (e.target.dataset.value !== undefined) {
+    filtroFechaSeleccionado = e.target.dataset.value;
+    this.style.display = 'none';
+    renderTablaFiltrada();
+  }
+};
+
+// cerrar modales
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.menu-desplegable') && !e.target.closest('.list')) {
+    document.querySelectorAll('.menu-desplegable').forEach(menu => {
+      menu.style.display = 'none';
+    });
+  }
+});
+
+function renderTablaFiltrada() {
+  const filtroConcepto = filtroConceptoSeleccionado;
+  const filtroAsignacion = filtroAsignacionSeleccionado;
+  const filtroEstado = filtroEstadoSeleccionado;
+  const filtroFecha = filtroFechaSeleccionado;
+  const cuerpoTabla = document.querySelector('tbody');
+  cuerpoTabla.innerHTML = "";
+  todosLosReportes.forEach((data) => {
+    if (
+      (filtroConcepto === "" || data.Concepto === filtroConcepto) &&
+      (filtroAsignacion === "" || data.Asignacion === filtroAsignacion) &&
+      (filtroEstado === "" || data.Estado === filtroEstado) &&
+      (filtroFecha === "" || data.Fecha === filtroFecha)
+    ) {
+      const nuevaFila = cuerpoTabla.insertRow();
+
+      const celdaId = nuevaFila.insertCell();
+      celdaId.textContent = data.ID || "";
+      
+      const celdaConcepto = nuevaFila.insertCell();
+      celdaConcepto.textContent = data.Concepto || "";
+
+      const celdaUbicacion = nuevaFila.insertCell();
+      celdaUbicacion.textContent = data.Ubicacion || "";
+
+      const celdaAsignacion = nuevaFila.insertCell();
+      celdaAsignacion.textContent = data.Asignacion || "";
+
+      const celdaEstado = nuevaFila.insertCell();
+      celdaEstado.textContent = data.Estado || "";
+
+      const celdaFecha = nuevaFila.insertCell();
+      celdaFecha.textContent = data.Fecha || "";
+      // Botón Editar
+      const celdaEditar = nuevaFila.insertCell();
+      const imgEditar = document.createElement('img');
+      imgEditar.src = './img/lapiz.png';
+      imgEditar.alt = 'Editar';
+      imgEditar.style.cursor = 'pointer';
+      imgEditar.style.width = '24px';
+      imgEditar.onclick = function () {
+        abrirModalEditar(data._docId, data);
+      };
+      celdaEditar.appendChild(imgEditar);
+
+      // Botón Eliminar
+      const celdaEliminar = nuevaFila.insertCell();
+      const imgEliminar = document.createElement('img');
+      imgEliminar.src = './img/basura.png';
+      imgEliminar.alt = 'Eliminar';
+      imgEliminar.style.cursor = 'pointer';
+      imgEliminar.style.width = '24px';
+      imgEliminar.onclick = function () {
+        db.collection("Tecnicos").doc(data._docId).delete().then(mostrarReportes);
+      };
+      celdaEliminar.appendChild(imgEliminar);
+    }
+  });
+}
+
+function llenarSelectTecnicosActivos(tecnicoIdSeleccionado = "") {
+  const select = document.getElementById('editAsignacion');
+  select.innerHTML = '<option value="">Selecciona un técnico</option>';
+  db.collection("Tecnicos").where("Estado", "==", "Activo").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const idTecnico = doc.data().ID;
+      const option = document.createElement('option');
+      option.value = idTecnico;
+      option.textContent = idTecnico;
+      if (idTecnico === tecnicoIdSeleccionado) option.selected = true;
+      select.appendChild(option);
+    });
+  });
 }
