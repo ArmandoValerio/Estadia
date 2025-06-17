@@ -306,14 +306,26 @@ function renderTablaFiltrada() {
   const filtroAsignacion = filtroAsignacionSeleccionado;
   const filtroEstado = filtroEstadoSeleccionado;
   const filtroFecha = filtroFechaSeleccionado;
+  const searchTerm = document.getElementById('searchterm').value.trim().toLowerCase();
   const cuerpoTabla = document.querySelector('tbody');
   cuerpoTabla.innerHTML = "";
   todosLosReportes.forEach((data) => {
+    // Aplica filtros y búsqueda combinados
+    const coincideBusqueda =
+      searchTerm === "" ||
+      (data.ID?.toString().toLowerCase().includes(searchTerm)) ||
+      (data.Concepto?.toLowerCase().includes(searchTerm)) ||
+      (data.Ubicacion?.toLowerCase().includes(searchTerm)) ||
+      (data.Asignacion?.toLowerCase().includes(searchTerm)) ||
+      (data.Estado?.toLowerCase().includes(searchTerm)) ||
+      (data.Fecha?.toLowerCase().includes(searchTerm));
+
     if (
       (filtroConcepto === "" || data.Concepto === filtroConcepto) &&
       (filtroAsignacion === "" || data.Asignacion === filtroAsignacion) &&
       (filtroEstado === "" || data.Estado === filtroEstado) &&
-      (filtroFecha === "" || data.Fecha === filtroFecha)
+      (filtroFecha === "" || data.Fecha === filtroFecha) &&
+      coincideBusqueda
     ) {
       const nuevaFila = cuerpoTabla.insertRow();
 
@@ -334,6 +346,7 @@ function renderTablaFiltrada() {
 
       const celdaFecha = nuevaFila.insertCell();
       celdaFecha.textContent = data.Fecha || "";
+
       // Botón Editar
       const celdaEditar = nuevaFila.insertCell();
       const imgEditar = document.createElement('img');
@@ -354,12 +367,18 @@ function renderTablaFiltrada() {
       imgEliminar.style.cursor = 'pointer';
       imgEliminar.style.width = '24px';
       imgEliminar.onclick = function () {
-        db.collection("Tecnicos").doc(data._docId).delete().then(mostrarReportes);
+        db.collection("Reportes").doc(data._docId).delete().then(mostrarReportes);
       };
       celdaEliminar.appendChild(imgEliminar);
     }
   });
 }
+
+// Asocia la búsqueda al botón y al input
+document.getElementById('search').onclick = renderTablaFiltrada;
+document.getElementById('searchterm').addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') renderTablaFiltrada();
+});
 
 function llenarSelectTecnicosActivos(tecnicoIdSeleccionado = "") {
   const select = document.getElementById('editAsignacion');

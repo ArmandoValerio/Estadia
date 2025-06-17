@@ -239,37 +239,32 @@ function renderTablaFiltrada() {
   const filtroApellidos = filtroApellidosSeleccionado;
   const filtroNombre = filtroNombreSeleccionado;
   const filtroId = filtroIdSeleccionado;
+  const searchTerm = document.getElementById('searchterm').value.trim().toLowerCase();
   const cuerpoTabla = document.querySelector('tbody');
   cuerpoTabla.innerHTML = "";
   todosLosTecnicos.forEach((data) => {
+    const coincideBusqueda =
+      searchTerm === "" ||
+      (data.ID?.toString().toLowerCase().includes(searchTerm)) ||
+      (data.Nombre?.toLowerCase().includes(searchTerm)) ||
+      (data.Apellidos?.toLowerCase().includes(searchTerm)) ||
+      (data.Contacto?.toLowerCase().includes(searchTerm)) ||
+      (data.Estado?.toLowerCase().includes(searchTerm));
+
     if (
       (filtroEstado === "" || data.Estado === filtroEstado) &&
       (filtroContacto === "" || data.Contacto === filtroContacto) &&
       (filtroApellidos === "" || data.Apellidos === filtroApellidos) &&
       (filtroNombre === "" || data.Nombre === filtroNombre) &&
-      (filtroId === "" || data.ID === filtroId)
+      (filtroId === "" || data.ID === filtroId) &&
+      coincideBusqueda
     ) {
       const nuevaFila = cuerpoTabla.insertRow();
-
-      // ID
-      const celdaId = nuevaFila.insertCell();
-      celdaId.textContent = data.ID || "";
-
-      // Nombre
-      const celdaNombre = nuevaFila.insertCell();
-      celdaNombre.textContent = data.Nombre || "";
-
-      // Apellidos
-      const celdaApellidos = nuevaFila.insertCell();
-      celdaApellidos.textContent = data.Apellidos || "";
-
-      // Contacto
-      const celdaContacto = nuevaFila.insertCell();
-      celdaContacto.textContent = data.Contacto || "";
-
-      // Estado
-      const celdaEstado = nuevaFila.insertCell();
-      celdaEstado.textContent = data.Estado || "";
+      nuevaFila.insertCell().textContent = data.ID || "";
+      nuevaFila.insertCell().textContent = data.Nombre || "";
+      nuevaFila.insertCell().textContent = data.Apellidos || "";
+      nuevaFila.insertCell().textContent = data.Contacto || "";
+      nuevaFila.insertCell().textContent = data.Estado || "";
 
       // Botón Editar
       const celdaEditar = nuevaFila.insertCell();
@@ -297,4 +292,10 @@ function renderTablaFiltrada() {
     }
   });
 }
+
+// Asocia la búsqueda al botón y al input
+document.getElementById('search').onclick = renderTablaFiltrada;
+document.getElementById('searchterm').addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') renderTablaFiltrada();
+});
 

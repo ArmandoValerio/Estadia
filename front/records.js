@@ -178,19 +178,48 @@ document.addEventListener('click', function (e) {
   }
 });
 
+function generarPDFReporte(reporte) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(16);
+  doc.text("Reporte #00" + (reporte.ID || ""), 10, 20);
+
+  doc.setFontSize(12);
+  doc.text("Concepto: " + (reporte.Concepto || ""), 10, 35);
+  doc.text("Ubicación: " + (reporte.Ubicacion || ""), 10, 45);
+  doc.text("Asignación: " + (reporte.Asignacion || ""), 10, 55);
+  doc.text("Estado: " + (reporte.Estado || ""), 10, 65);
+  doc.text("Fecha: " + (reporte.Fecha || ""), 10, 75);
+
+  doc.save("reporte_" + (reporte.ID || "sin_id") + ".pdf");
+}
+
 function renderTablaFiltrada() {
   const filtroConcepto = filtroConceptoSeleccionado;
   const filtroAsignacion = filtroAsignacionSeleccionado;
   const filtroEstado = filtroEstadoSeleccionado;
   const filtroFecha = filtroFechaSeleccionado;
+  const searchTerm = document.getElementById('searchterm').value.trim().toLowerCase();
   const cuerpoTabla = document.querySelector('tbody');
   cuerpoTabla.innerHTML = "";
   todosLosReportes.forEach((data) => {
+    // Aplica filtros y búsqueda combinados
+    const coincideBusqueda =
+      searchTerm === "" ||
+      (data.ID?.toString().toLowerCase().includes(searchTerm)) ||
+      (data.Concepto?.toLowerCase().includes(searchTerm)) ||
+      (data.Ubicacion?.toLowerCase().includes(searchTerm)) ||
+      (data.Asignacion?.toLowerCase().includes(searchTerm)) ||
+      (data.Estado?.toLowerCase().includes(searchTerm)) ||
+      (data.Fecha?.toLowerCase().includes(searchTerm));
+
     if (
       (filtroConcepto === "" || data.Concepto === filtroConcepto) &&
       (filtroAsignacion === "" || data.Asignacion === filtroAsignacion) &&
       (filtroEstado === "" || data.Estado === filtroEstado) &&
-      (filtroFecha === "" || data.Fecha === filtroFecha)
+      (filtroFecha === "" || data.Fecha === filtroFecha) &&
+      coincideBusqueda
     ) {
       const nuevaFila = cuerpoTabla.insertRow();
 
@@ -211,7 +240,8 @@ function renderTablaFiltrada() {
 
       const celdaFecha = nuevaFila.insertCell();
       celdaFecha.textContent = data.Fecha || "";
-      // Botón Editar
+
+      // Botón Generar reporte
       const celdaDoc = nuevaFila.insertCell();
       const imgDoc = document.createElement('img');
       imgDoc.src = './img/Docs.png';
@@ -219,9 +249,15 @@ function renderTablaFiltrada() {
       imgDoc.style.cursor = 'pointer';
       imgDoc.style.width = '24px';
       imgDoc.onclick = function () {
-        abrirModalEditar(data._docId, data);
+        generarPDFReporte(data);
       };
       celdaDoc.appendChild(imgDoc);
     }
   });
 }
+
+// Asocia la búsqueda al botón y al input
+document.getElementById('search').onclick = renderTablaFiltrada;
+document.getElementById('searchterm').addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') renderTablaFiltrada();
+});
