@@ -1,6 +1,8 @@
 // firebase.js
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebase-key.json');
+const path = require('path');
+const fs = require('fs/promises');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -50,10 +52,22 @@ async function getDocumentById(collection, docId) {
 
 async function setImage(collection, docId, image) {
   try {
-    await db.collection(collection).doc(docId).set({ image });
-    return docId;
+    // Crea la carpeta uploads si no existe
+    const uploadsDir = path.join(__dirname, 'uploads');
+    await fs.mkdir(uploadsDir, { recursive: true });
+
+    // Guarda la imagen (asume que image es un Buffer o base64 string)
+    const imagePath = path.join(uploadsDir, `${collection}_${docId}.jpg`);
+    if (Buffer.isBuffer(image)) {
+      await fs.writeFile(imagePath, image);
+    } else {
+      // Si es base64, decodifica antes de guardar
+      const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+      await fs.writeFile(imagePath, Buffer.from(base64Data, 'base64'));
+    }
+    return imagePath;
   } catch (error) {
-    console.error('Error setting image:', error);
+    console.error('Error saving image:', error);
     throw error;
   }
 }

@@ -1,0 +1,11 @@
+# Ignorar la carpeta de imágenes subidas
+uploads/
+
+# Ignorar archivos de claves de Firebase
+firebase-key.json
+
+# Ignorar archivos temporales y del sistema
+*.log
+node_modules/
+.env
+.DS_Store

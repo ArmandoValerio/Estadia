@@ -1,9 +1,11 @@
 // routes/documentos.js
 const express = require('express');
 const router = express.Router();
-const { addDocument, getDocs, setDocument, getDocumentById } = require('../firebase');
+const multer = require('multer');
+const upload = multer();
+const { addDocument, getDocs, setDocument, getDocumentById, setImage } = require('../firebase');
 
-const COLLECTION = '12345'; // Cambia esto por el nombre real
+const COLLECTION = 'Reportes'; // Cambia esto por el nombre real
 
 // Crear documento
 router.post('/', async (req, res) => {
@@ -46,13 +48,45 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'No se pudo obtener el documento' });
   }
 });
-router.post('/setImage/:id', async (req, res) => {
+
+// Subir imagen
+router.post('/setImage/:id', upload.single('image'), async (req, res) => {
   try {
     const docId = req.params.id;
-    await setDocument(COLLECTION, docId, { image: req.body.image });
-    res.status(201).json({ id: docId });
+    const imageBuffer = req.file.buffer;
+    const imagePath = await setImage(COLLECTION, docId, imageBuffer);
+    res.status(201).json({ id: docId, path: imagePath });
   } catch (error) {
     res.status(500).json({ error: 'No se pudo guardar la imagen' });
+  }
+});
+
+// Crear documento y subir imagen al mismo tiempo
+router.post('/createWithImage', upload.single('image'), async (req, res) => {
+  try {
+    // 1. Obtener todos los documentos para calcular el siguiente ID
+    const docs = await getDocs(COLLECTION);
+    let maxId = 0;
+    docs.forEach(doc => {
+      const docIdNum = parseInt(doc.ID, 10);
+      if (!isNaN(docIdNum) && docIdNum > maxId) maxId = docIdNum;
+    });
+    const nextId = maxId + 1;
+
+    // 2. Crea el documento con los datos recibidos y el nuevo ID
+    const docData = { ...req.body, ID: nextId.toString() };
+    const docId = await addDocument(COLLECTION, docData);
+
+    // 3. Guarda la imagen usando el docId generado
+    const imageBuffer = req.file.buffer;
+    const imagePath = await setImage(COLLECTION, docId, imageBuffer);
+
+    // 4. Actualiza el documento para guardar la ruta de la imagen
+    await setDocument(COLLECTION, docId, { ...docData, imagePath });
+
+    res.status(201).json({ id: docId, ID: nextId, imagePath });
+  } catch (error) {
+    res.status(500).json({ error: 'No se pudo crear el documento con imagen' });
   }
 });
 
